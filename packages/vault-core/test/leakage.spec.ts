@@ -25,7 +25,9 @@ function flattenForScan(value: unknown, seen = new WeakSet<object>()): string {
 
 describe('no-plaintext-leakage', () => {
   const consoleSpies = ['log', 'warn', 'error', 'info', 'debug'] as const;
-  const spies = consoleSpies.map((method) => vi.spyOn(console, method).mockImplementation(() => {}));
+  const spies = consoleSpies.map((method) =>
+    vi.spyOn(console, method).mockImplementation(() => {}),
+  );
 
   afterEach(() => {
     for (const spy of spies) spy.mockClear();

@@ -10,7 +10,7 @@
   --color-amber: #f59e0b;
   --color-crimson: #ef4444;
   --font-ui: Inter, system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, monospace;
+  --font-mono: "JetBrains Mono", "Fira Code", Menlo, monospace;
 }
 
 * {
@@ -65,8 +65,8 @@ body {
   color: var(--color-text-dim);
 }
 
-input[type='password'],
-input[type='text'],
+input[type="password"],
+input[type="text"],
 textarea,
 select {
   background: var(--color-bg-slate);

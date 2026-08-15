@@ -1,7 +1,7 @@
 import { argon2id } from 'hash-wasm';
 import { concatBytes, utf8Encode } from './bytes.js';
-import { zeroize } from './zeroize.js';
 import type { Argon2idParams, DeriveMasterKeyOptions } from './types.js';
+import { zeroize } from './zeroize.js';
 
 /** Matches the spec: t=3, m=64MB (65536 KiB), p=4 lanes, 32-byte output. */
 export const DEFAULT_ARGON2ID_PARAMS: Argon2idParams = {

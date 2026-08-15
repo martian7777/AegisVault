@@ -2,6 +2,7 @@ import { decryptBytes, encryptBytes } from './aes-gcm.js';
 import { canonicalAADBytes, utf8Decode, utf8Encode } from './bytes.js';
 import { GCM_IV_BYTES, KEY_BYTES, getRandomBytes } from './random.js';
 import type { EncryptedEnvelope, ItemAAD } from './types.js';
+import { asBufferSource } from './webcrypto-compat.js';
 import { zeroize } from './zeroize.js';
 
 /**
@@ -19,17 +20,32 @@ export async function encryptItem(
   const aadBytes = canonicalAADBytes(aad);
 
   try {
-    const itemKey = await crypto.subtle.importKey('raw', itemKeyRaw, { name: 'AES-GCM' }, false, [
-      'encrypt',
-    ]);
+    const itemKey = await crypto.subtle.importKey(
+      'raw',
+      asBufferSource(itemKeyRaw),
+      { name: 'AES-GCM' },
+      false,
+      ['encrypt'],
+    );
 
     const iv = getRandomBytes(GCM_IV_BYTES);
-    const ciphertext = await encryptBytes(itemKey, iv, utf8Encode(JSON.stringify(plaintext)), aadBytes);
+    const ciphertext = await encryptBytes(
+      itemKey,
+      iv,
+      utf8Encode(JSON.stringify(plaintext)),
+      aadBytes,
+    );
 
     const wrapIv = getRandomBytes(GCM_IV_BYTES);
     const wrappedKey = await encryptBytes(kEnc, wrapIv, itemKeyRaw);
 
-    return { ciphertext, iv: iv.buffer as ArrayBuffer, wrappedKey, wrapIv: wrapIv.buffer as ArrayBuffer, aad };
+    return {
+      ciphertext,
+      iv: iv.buffer as ArrayBuffer,
+      wrappedKey,
+      wrapIv: wrapIv.buffer as ArrayBuffer,
+      aad,
+    };
   } finally {
     zeroize(itemKeyRaw);
   }

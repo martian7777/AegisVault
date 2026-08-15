@@ -32,7 +32,7 @@ describe('encryptBytes / decryptBytes', () => {
   it('throws DecryptionError (never returns garbage) when the AAD does not match', async () => {
     const key = await importKey(VEC.key, ['decrypt']);
     const iv = hexToBytes(VEC.iv);
-    const wrongAad = hexToBytes(VEC.aad.slice(0, -2) + 'ff');
+    const wrongAad = hexToBytes(`${VEC.aad.slice(0, -2)}ff`);
     const ciphertext = hexToBytes(VEC.ciphertextAndTag).buffer as ArrayBuffer;
 
     await expect(decryptBytes(key, iv, ciphertext, wrongAad)).rejects.toThrow(DecryptionError);

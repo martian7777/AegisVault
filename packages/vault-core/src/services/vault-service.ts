@@ -1,4 +1,9 @@
-import { type EncryptedEnvelope, type ItemAAD, decryptItem, encryptItem } from '@aegisvault/crypto-core';
+import {
+  type EncryptedEnvelope,
+  type ItemAAD,
+  decryptItem,
+  encryptItem,
+} from '@aegisvault/crypto-core';
 import type { VaultItemRecord, VaultItemType } from '../models/vault-item.js';
 import type { VaultRepository } from '../repository/repository.interface.js';
 

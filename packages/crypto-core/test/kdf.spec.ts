@@ -37,7 +37,9 @@ describe('deriveMasterKey', () => {
     const diffSecret = bytesToHex(
       await deriveMasterKey({ ...base, secretKey: hexToBytes('04'.repeat(16)) }),
     );
-    const diffSalt = bytesToHex(await deriveMasterKey({ ...base, salt: hexToBytes('05'.repeat(16)) }));
+    const diffSalt = bytesToHex(
+      await deriveMasterKey({ ...base, salt: hexToBytes('05'.repeat(16)) }),
+    );
 
     expect(diffPassword).not.toBe(baseline);
     expect(diffSecret).not.toBe(baseline);

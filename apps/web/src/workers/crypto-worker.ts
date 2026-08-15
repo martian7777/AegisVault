@@ -1,4 +1,3 @@
-import * as Comlink from 'comlink';
 import {
   IndexedDbVaultRepository,
   type VaultBackup,
@@ -10,6 +9,7 @@ import {
   onboardVault,
   unlockVault,
 } from '@aegisvault/vault-core';
+import * as Comlink from 'comlink';
 
 /**
  * Lives entirely inside a dedicated Web Worker. `kEnc` (and the VaultService
@@ -49,16 +49,18 @@ const api = {
     return vaultService !== null;
   },
 
-  async createItem(
-    type: VaultItemType,
-    plaintext: unknown,
-    favorite?: boolean,
-  ): Promise<string> {
-    return requireUnlocked().createItem(type, plaintext, { favorite });
+  async createItem(type: VaultItemType, plaintext: unknown, favorite?: boolean): Promise<string> {
+    return requireUnlocked().createItem(
+      type,
+      plaintext,
+      favorite === undefined ? undefined : { favorite },
+    );
   },
 
-  async getItem<T>(id: string): Promise<T | undefined> {
-    return requireUnlocked().getItem<T>(id);
+  // Comlink's Remote<> proxy type does not preserve generic call signatures,
+  // so this returns `unknown` and callers cast at the call site.
+  async getItem(id: string): Promise<unknown> {
+    return requireUnlocked().getItem(id);
   },
 
   async updateItem(id: string, plaintext: unknown): Promise<void> {

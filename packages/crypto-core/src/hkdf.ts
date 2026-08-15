@@ -1,6 +1,7 @@
 import { utf8Encode } from './bytes.js';
-import { zeroize } from './zeroize.js';
 import type { SubKeys } from './types.js';
+import { asBufferSource } from './webcrypto-compat.js';
+import { zeroize } from './zeroize.js';
 
 const ENC_INFO = utf8Encode('aegisvault:enc:v1');
 const AUTH_INFO = utf8Encode('aegisvault:auth:v1');
@@ -13,16 +14,18 @@ const AUTH_INFO = utf8Encode('aegisvault:auth:v1');
  * before returning.
  */
 export async function deriveSubKeys(mk: Uint8Array): Promise<SubKeys> {
-  const baseKey = await crypto.subtle.importKey('raw', mk, 'HKDF', false, ['deriveBits']);
+  const baseKey = await crypto.subtle.importKey('raw', asBufferSource(mk), 'HKDF', false, [
+    'deriveBits',
+  ]);
 
   const [encBits, authBits] = await Promise.all([
     crypto.subtle.deriveBits(
-      { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(0), info: ENC_INFO },
+      { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(0), info: asBufferSource(ENC_INFO) },
       baseKey,
       256,
     ),
     crypto.subtle.deriveBits(
-      { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(0), info: AUTH_INFO },
+      { name: 'HKDF', hash: 'SHA-256', salt: new Uint8Array(0), info: asBufferSource(AUTH_INFO) },
       baseKey,
       256,
     ),

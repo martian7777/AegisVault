@@ -1,7 +1,7 @@
 import type { VaultItemType } from '@aegisvault/vault-core';
 import { useCallback, useEffect, useState } from 'react';
-import { ExportImportPanel } from '../export-import/ExportImportPanel.js';
 import { cryptoWorker } from '../../lib/worker-client.js';
+import { ExportImportPanel } from '../export-import/ExportImportPanel.js';
 import { CreateLoginForm } from './CreateLoginForm.js';
 import { ItemDetail } from './ItemDetail.js';
 import type { LoginItemPayload } from './types.js';
@@ -20,7 +20,7 @@ async function buildDisplayIndex(): Promise<VaultIndexEntry[]> {
   const summaries = await cryptoWorker.listItemSummaries();
   return Promise.all(
     summaries.map(async (summary) => {
-      const payload = await cryptoWorker.getItem<LoginItemPayload>(summary.id);
+      const payload = (await cryptoWorker.getItem(summary.id)) as LoginItemPayload | undefined;
       return {
         id: summary.id,
         type: summary.type,
@@ -53,7 +53,7 @@ export function VaultScreen({ onLocked }: { onLocked: () => void }) {
     setSelectedId(id);
     setSelectedItem(null);
     try {
-      const item = await cryptoWorker.getItem<LoginItemPayload>(id);
+      const item = (await cryptoWorker.getItem(id)) as LoginItemPayload | undefined;
       setSelectedItem(item ?? null);
     } catch {
       setError('Could not decrypt this item.');

@@ -1,9 +1,9 @@
 import {
   type Argon2idParams,
   AuthenticationFailedError,
+  type SubKeys,
   deriveMasterKey,
   deriveSubKeys,
-  type SubKeys,
 } from '@aegisvault/crypto-core';
 import type { VaultRepository } from '../repository/repository.interface.js';
 import { computeAuthVerifier, constantTimeEqual } from './verifier.js';
@@ -36,7 +36,9 @@ export async function unlockVault(
   const params = paramsMeta?.value as Partial<Argon2idParams> | undefined;
   const storedVerifier = verifierMeta.value as Uint8Array;
 
-  const mk = await deriveMasterKey({ password, secretKey, salt, params });
+  const mk = await deriveMasterKey(
+    params ? { password, secretKey, salt, params } : { password, secretKey, salt },
+  );
   const subKeys = await deriveSubKeys(mk);
   const computedVerifier = await computeAuthVerifier(subKeys.kAuth);
 

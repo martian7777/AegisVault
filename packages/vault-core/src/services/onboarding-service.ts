@@ -1,9 +1,9 @@
 import {
   DEFAULT_ARGON2ID_PARAMS,
+  type SubKeys,
   deriveMasterKey,
   deriveSubKeys,
   getRandomBytes,
-  type SubKeys,
 } from '@aegisvault/crypto-core';
 import type { VaultRepository } from '../repository/repository.interface.js';
 import { computeAuthVerifier } from './verifier.js';

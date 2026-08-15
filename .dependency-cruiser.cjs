@@ -11,7 +11,8 @@ module.exports = {
     },
     {
       name: 'vault-core-only-depends-on-crypto-core',
-      comment: 'vault-core is the data/domain layer; it may only depend on crypto-core, never on apps.',
+      comment:
+        'vault-core is the data/domain layer; it may only depend on crypto-core, never on apps.',
       severity: 'error',
       from: { path: '^packages/vault-core' },
       to: { path: '^apps' },
