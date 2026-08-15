@@ -85,7 +85,7 @@ export function VaultScreen({ onLocked }: { onLocked: () => void }) {
       <div className="vault-shell">
         <div className="vault-toolbar">
           <h1>Vault</h1>
-          <div style={{ display: 'flex', gap: '0.5rem' }}>
+          <div className="row-gap">
             <button type="button" onClick={() => setShowCreateForm((v) => !v)}>
               {showCreateForm ? 'Cancel' : 'New login'}
             </button>
@@ -106,7 +106,7 @@ export function VaultScreen({ onLocked }: { onLocked: () => void }) {
                 <div>{item.title}</div>
                 <span className="badge">{item.type}</span>
               </div>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div className="row-gap">
                 <button type="button" className="secondary" onClick={() => handleSelect(item.id)}>
                   View
                 </button>

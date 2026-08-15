@@ -40,7 +40,7 @@ export function ExportImportPanel({ onImported }: { onImported: () => void }) {
         Everything in this file is already encrypted — it contains no plaintext, only ciphertext and
         non-secret key-derivation parameters.
       </p>
-      <div style={{ display: 'flex', gap: '0.5rem' }}>
+      <div className="row-gap">
         <button type="button" className="secondary" onClick={handleExport}>
           Export encrypted backup
         </button>
@@ -51,7 +51,7 @@ export function ExportImportPanel({ onImported }: { onImported: () => void }) {
           ref={fileInputRef}
           type="file"
           accept="application/json"
-          style={{ display: 'none' }}
+          className="visually-hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) void handleImportFile(file);

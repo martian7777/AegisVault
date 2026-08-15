@@ -163,3 +163,16 @@ button:disabled {
   letter-spacing: 0.04em;
   color: var(--color-text-dim);
 }
+
+.row-gap {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.field-spaced {
+  margin-top: 1rem;
+}
+
+.visually-hidden {
+  display: none;
+}

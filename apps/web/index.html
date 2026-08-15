@@ -3,10 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none';"
-    />
+    <!--
+      CSP is enforced via an HTTP response header at the hosting layer
+      (see public/_headers), not a <meta> tag here. Vite's dev server
+      injects CSS through a JS-created <style> tag for HMR, which a strict
+      style-src would block — a <meta> CSP baked into this file would apply
+      to `pnpm dev` too and break local development. See SECURITY.md.
+    -->
     <title>AegisVault</title>
   </head>
   <body>

@@ -42,7 +42,7 @@ export function OnboardingScreen({ onOnboarded }: { onOnboarded: () => void }) {
             it for you — store it somewhere safe (e.g. printed, or in a separate secure location).
           </p>
           <div className="secret-key-display">{secretKey}</div>
-          <div className="field" style={{ marginTop: '1rem' }}>
+          <div className="field field-spaced">
             <label>
               <input
                 type="checkbox"
