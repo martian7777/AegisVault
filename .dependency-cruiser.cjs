@@ -18,6 +18,14 @@ module.exports = {
       to: { path: '^apps' },
     },
     {
+      name: 'web-never-imports-node-only-vault-core',
+      comment:
+        'apps/web is a browser bundle; it must never pull in vault-core/node (fs/path-based repository) — that would bloat the bundle or crash at runtime.',
+      severity: 'error',
+      from: { path: '^apps/web' },
+      to: { path: '^packages/vault-core/src/(node\\.ts|repository/file-repository\\.ts)$' },
+    },
+    {
       name: 'no-circular',
       comment: 'Circular dependencies make boundaries meaningless.',
       severity: 'error',

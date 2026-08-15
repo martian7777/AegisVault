@@ -1,6 +1,13 @@
 import type { ItemAAD } from '@aegisvault/crypto-core';
 
-export type VaultItemType = 'login' | 'note' | 'card' | 'identity';
+export type VaultItemType =
+  | 'login'
+  | 'note'
+  | 'card'
+  | 'identity'
+  | 'envvar'
+  | 'sshkey'
+  | 'apitoken';
 
 /**
  * Persisted shape of a vault item. Every field here is either ciphertext,
