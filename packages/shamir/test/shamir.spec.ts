@@ -3,7 +3,8 @@ import { combineShares, splitSecret } from '../src/shamir.js';
 
 function secretOf(hex: string): Uint8Array {
   const bytes = new Uint8Array(hex.length / 2);
-  for (let i = 0; i < bytes.length; i++) bytes[i] = Number.parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+  for (let i = 0; i < bytes.length; i++)
+    bytes[i] = Number.parseInt(hex.slice(i * 2, i * 2 + 2), 16);
   return bytes;
 }
 
@@ -54,7 +55,9 @@ describe('splitSecret / combineShares', () => {
     const secret = secretOf('12345678');
     const a = splitSecret(secret, { shares: 5, threshold: 3 });
     const b = splitSecret(secret, { shares: 5, threshold: 4 });
-    expect(() => combineShares([a[0], a[1], b[0]].filter((s) => s !== undefined))).toThrow(/mismatched threshold/);
+    expect(() => combineShares([a[0], a[1], b[0]].filter((s) => s !== undefined))).toThrow(
+      /mismatched threshold/,
+    );
   });
 
   it('rejects duplicate share indices', () => {
@@ -62,9 +65,9 @@ describe('splitSecret / combineShares', () => {
     const shares = splitSecret(secret, { shares: 5, threshold: 3 });
     const first = shares[0];
     if (!first) throw new Error('test setup failed');
-    expect(() => combineShares([first, first, shares[1]].filter((s): s is typeof first => s !== undefined))).toThrow(
-      /duplicate/i,
-    );
+    expect(() =>
+      combineShares([first, first, shares[1]].filter((s): s is typeof first => s !== undefined)),
+    ).toThrow(/duplicate/i);
   });
 
   it('rejects threshold < 2', () => {
@@ -72,7 +75,9 @@ describe('splitSecret / combineShares', () => {
   });
 
   it('rejects shares < threshold at split time', () => {
-    expect(() => splitSecret(secretOf('aa'), { shares: 2, threshold: 3 })).toThrow(/shares must be/);
+    expect(() => splitSecret(secretOf('aa'), { shares: 2, threshold: 3 })).toThrow(
+      /shares must be/,
+    );
   });
 
   it('produces shares that individually reveal nothing about the secret (spot check: differs from a fresh split)', () => {

@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@aegisvault/crypto-core": "workspace:*",
+    "@aegisvault/shamir": "workspace:*",
     "dexie": "^4.0.11"
   },
   "devDependencies": {

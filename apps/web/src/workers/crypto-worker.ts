@@ -1,12 +1,16 @@
 import {
   IndexedDbVaultRepository,
+  type RecoveryParams,
   type VaultBackup,
   type VaultItemSummary,
   type VaultItemType,
   VaultService,
+  enableRecovery,
   exportVaultBackup,
+  getRecoveryParams,
   importVaultBackup,
   onboardVault,
+  recoverVaultWithShares,
   unlockVault,
 } from '@aegisvault/vault-core';
 import * as Comlink from 'comlink';
@@ -84,6 +88,23 @@ const api = {
     // Force re-unlock: the imported vault's salt/verifier may differ from
     // whatever key this session was holding.
     vaultService = null;
+  },
+
+  async getRecoveryParams(): Promise<RecoveryParams | undefined> {
+    return getRecoveryParams(repository);
+  },
+
+  async enableRecovery(
+    password: string,
+    secretKey: Uint8Array,
+    options: { shares: number; threshold: number },
+  ): Promise<string[]> {
+    return enableRecovery(password, secretKey, repository, options);
+  },
+
+  async recoverWithShares(shareTexts: string[]): Promise<void> {
+    const { kEnc } = await recoverVaultWithShares(shareTexts, repository);
+    vaultService = new VaultService(repository, kEnc);
   },
 };
 

@@ -16,7 +16,11 @@ describe('encodeShare / decodeShare', () => {
 
   it('tolerates surrounding whitespace from copy-paste', () => {
     const encoded = encodeShare({ index: 1, threshold: 2, data: new Uint8Array([9]) });
-    expect(decodeShare(`  \n${encoded}\n `)).toEqual({ index: 1, threshold: 2, data: new Uint8Array([9]) });
+    expect(decodeShare(`  \n${encoded}\n `)).toEqual({
+      index: 1,
+      threshold: 2,
+      data: new Uint8Array([9]),
+    });
   });
 
   it('rejects text that is not a recovery share', () => {

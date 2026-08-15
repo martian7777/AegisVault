@@ -2,6 +2,7 @@ import type { VaultItemType } from '@aegisvault/vault-core';
 import { useCallback, useEffect, useState } from 'react';
 import { cryptoWorker } from '../../lib/worker-client.js';
 import { ExportImportPanel } from '../export-import/ExportImportPanel.js';
+import { RecoverySetupPanel } from '../recovery/RecoverySetupPanel.js';
 import { SyncPanel } from '../sync/SyncPanel.js';
 import { CreateLoginForm } from './CreateLoginForm.js';
 import { ItemDetail } from './ItemDetail.js';
@@ -124,6 +125,7 @@ export function VaultScreen({ onLocked }: { onLocked: () => void }) {
 
         <ExportImportPanel onImported={onLocked} />
         <SyncPanel onImported={onLocked} />
+        <RecoverySetupPanel />
       </div>
     </div>
   );

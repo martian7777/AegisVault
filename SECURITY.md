@@ -153,3 +153,40 @@ Per vault item:
   import — the UI requires an explicit confirmation because there is no
   merge logic (see the deferred roadmap: full delta/merge sync is a later
   increment, not part of this pairing flow).
+
+## Emergency Recovery (Shamir's Secret Sharing)
+
+- **Shares split the Master Key itself, not a separate wrapped key.**
+  Reconstructing >= threshold shares regenerates the exact same MK that
+  `deriveMasterKey(password, secretKey, salt)` produces, so recovery reuses
+  the entire existing unlock/verify path unmodified — no new wrap/unwrap
+  primitive, and no exception carved into the "kEnc is a non-extractable
+  CryptoKey" rule.
+- **Anyone holding `threshold` shares can fully unlock the vault, with no
+  master password at all.** That is the feature, not a bug — but it means
+  distributing shares is equivalent to distributing partial trust in the
+  vault's contents. Choose trustees and a threshold accordingly (e.g. 3-of-5
+  so no single trustee, and no pair of colluding trustees below the
+  threshold, can unlock it alone).
+- **Shamir's Secret Sharing has no built-in integrity check.** Combining
+  fewer than `threshold` shares, or shares from a different split, doesn't
+  error at the math layer — it silently produces a *different* byte
+  sequence. What actually catches a wrong/insufficient combination is the
+  same auth-verifier check unlock already uses (`verifyMasterKey`): a wrong
+  reconstructed MK derives the wrong `kAuth`, fails the verifier comparison,
+  and surfaces as `AuthenticationFailedError` — not a corrupted-but-accepted
+  vault.
+- **Generating new shares does not invalidate old ones.** "Set up emergency
+  recovery" again produces a fresh split of the *same* MK; previously
+  distributed shares still mathematically reconstruct it unless the master
+  password itself is later changed (out of scope for this MVP — there is no
+  change-password/key-rotation flow yet). Treat regenerating shares as
+  "also destroy the old copies," not a revoke.
+- **The field arithmetic is GF(2^8) with generator 3** (reducing polynomial
+  0x11B, the same one AES uses) — not a cryptographic design choice with
+  security implications on its own (any valid field works, since split and
+  combine only need to agree with each other), but worth noting since an
+  earlier draft of this implementation used generator 2, which is *not*
+  primitive under 0x11B (order 51, not 255) and silently corrupted most
+  reconstructions. Caught by property-based testing across share subsets,
+  not by the naive "first N shares" happy path.

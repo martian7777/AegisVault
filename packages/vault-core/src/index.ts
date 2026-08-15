@@ -3,6 +3,7 @@ export type {
   VaultItemType,
   VaultMetaKey,
   VaultMetaRecord,
+  RecoveryParams,
 } from './models/vault-item.js';
 export type { VaultRepository } from './repository/repository.interface.js';
 export { IndexedDbVaultRepository } from './repository/indexeddb-repository.js';
@@ -14,3 +15,9 @@ export {
   importVaultBackup,
   type VaultBackup,
 } from './services/export-import-service.js';
+export {
+  enableRecovery,
+  getRecoveryParams,
+  recoverVaultWithShares,
+  type EnableRecoveryOptions,
+} from './services/recovery-service.js';

@@ -30,14 +30,26 @@ export interface VaultItemRecord {
   aad: ItemAAD;
 }
 
-export type VaultMetaKey = 'kdfSalt' | 'kdfParams' | 'authVerifier' | 'schemaVersion';
+export type VaultMetaKey =
+  | 'kdfSalt'
+  | 'kdfParams'
+  | 'authVerifier'
+  | 'schemaVersion'
+  | 'recoveryParams';
 
 /**
  * Non-secret metadata needed to re-derive keys and validate an unlock
  * attempt. Never holds a key or key material — only salt, algorithm params,
- * and an HMAC verifier.
+ * an HMAC verifier, and (if emergency recovery is enabled) the k-of-n
+ * parameters used, never the shares themselves.
  */
 export interface VaultMetaRecord {
   key: VaultMetaKey;
   value: unknown;
+}
+
+export interface RecoveryParams {
+  threshold: number;
+  shares: number;
+  enabledAt: number;
 }

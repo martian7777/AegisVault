@@ -10,12 +10,20 @@ module.exports = {
       to: { path: '^(packages/vault-core|apps)' },
     },
     {
-      name: 'vault-core-only-depends-on-crypto-core',
+      name: 'vault-core-only-depends-on-crypto-packages',
       comment:
-        'vault-core is the data/domain layer; it may only depend on crypto-core, never on apps.',
+        'vault-core is the data/domain layer; it may only depend on crypto-core/shamir, never on apps.',
       severity: 'error',
       from: { path: '^packages/vault-core' },
       to: { path: '^apps' },
+    },
+    {
+      name: 'shamir-is-pure',
+      comment:
+        'shamir is a self-contained GF(256) secret-sharing primitive — it must not know about vault-core or any app, so it stays reusable (e.g. by a future CLI) and independently testable.',
+      severity: 'error',
+      from: { path: '^packages/shamir' },
+      to: { path: '^(packages/vault-core|packages/crypto-core|packages/sync-engine|apps)' },
     },
     {
       name: 'sync-engine-is-generic',

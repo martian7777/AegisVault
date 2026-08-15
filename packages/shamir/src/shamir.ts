@@ -25,7 +25,10 @@ export function splitSecret(secret: Uint8Array, options: SplitOptions): Share[] 
   if (shares > MAX_SHARES) throw new Error(`shares must be <= ${MAX_SHARES}.`);
   if (secret.length === 0) throw new Error('secret must not be empty.');
 
-  const shareBytes: Uint8Array[] = Array.from({ length: shares }, () => new Uint8Array(secret.length));
+  const shareBytes: Uint8Array[] = Array.from(
+    { length: shares },
+    () => new Uint8Array(secret.length),
+  );
 
   for (let byteIndex = 0; byteIndex < secret.length; byteIndex++) {
     const coefficients = new Uint8Array(threshold);
