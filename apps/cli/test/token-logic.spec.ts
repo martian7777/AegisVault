@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 import { type ApiTokenPayload, filterExpiringSoon } from '../src/lib/token-logic.js';
 
 function item(id: string, expiresAt?: string): { id: string; payload: ApiTokenPayload } {
-  return { id, payload: { provider: 'aws', label: id, token: 'x', ...(expiresAt ? { expiresAt } : {}) } };
+  return {
+    id,
+    payload: { provider: 'aws', label: id, token: 'x', ...(expiresAt ? { expiresAt } : {}) },
+  };
 }
 
 describe('filterExpiringSoon', () => {
@@ -10,7 +13,10 @@ describe('filterExpiringSoon', () => {
   const dayMs = 24 * 60 * 60 * 1000;
 
   it('flags tokens expiring within the window', () => {
-    const items = [item('soon', new Date(now + 5 * dayMs).toISOString()), item('far', new Date(now + 60 * dayMs).toISOString())];
+    const items = [
+      item('soon', new Date(now + 5 * dayMs).toISOString()),
+      item('far', new Date(now + 60 * dayMs).toISOString()),
+    ];
     const result = filterExpiringSoon(items, 30, now);
     expect(result.map((r) => r.id)).toEqual(['soon']);
   });

@@ -15,7 +15,10 @@ async function main(): Promise<void> {
   const rawArgs = process.argv.slice(2);
   if (rawArgs[0] === 'run') {
     const separatorIndex = rawArgs.indexOf('--');
-    const [, project, environment] = rawArgs.slice(0, separatorIndex === -1 ? rawArgs.length : separatorIndex);
+    const [, project, environment] = rawArgs.slice(
+      0,
+      separatorIndex === -1 ? rawArgs.length : separatorIndex,
+    );
     if (separatorIndex === -1 || !project || !environment) {
       console.error('Usage: aegis run <project> <environment> -- <command> [args...]');
       process.exitCode = 1;
@@ -65,8 +68,13 @@ async function main(): Promise<void> {
     .command('add <provider> <label> [token]')
     .option('--expires <date>', 'ISO date the token expires')
     .description('Store an API token (prompts for the value if omitted)')
-    .action((provider: string, label: string, tokenValue: string | undefined, options: { expires?: string }) =>
-      tokenAddCommand(provider, label, tokenValue, options),
+    .action(
+      (
+        provider: string,
+        label: string,
+        tokenValue: string | undefined,
+        options: { expires?: string },
+      ) => tokenAddCommand(provider, label, tokenValue, options),
     );
   token.command('list').description('List stored tokens').action(tokenListCommand);
   token
@@ -75,12 +83,15 @@ async function main(): Promise<void> {
     .description('Flag tokens expiring soon (exit code 1 if any found)')
     .action((options: { within: string }) => tokenCheckCommand({ within: Number(options.within) }));
 
-  program.command('run <project> <environment>').description(
-    'Run a command with vault secrets injected as env vars — use: aegis run <project> <env> -- <command>',
-  ).action(() => {
-    console.error('Usage: aegis run <project> <environment> -- <command> [args...]');
-    process.exitCode = 1;
-  });
+  program
+    .command('run <project> <environment>')
+    .description(
+      'Run a command with vault secrets injected as env vars — use: aegis run <project> <env> -- <command>',
+    )
+    .action(() => {
+      console.error('Usage: aegis run <project> <environment> -- <command> [args...]');
+      process.exitCode = 1;
+    });
 
   await program.parseAsync(process.argv);
 }

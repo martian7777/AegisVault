@@ -20,7 +20,11 @@ describe('encryptItem / decryptItem (property-based)', () => {
       fc.asyncProperty(jsonValue, aadArb, async (plaintext, aad) => {
         const envelope = await encryptItem(plaintext, kEnc, aad);
         const decrypted = await decryptItem(envelope, kEnc);
-        expect(decrypted).toEqual(plaintext);
+        // encryptItem serializes via JSON.stringify, so the real contract is
+        // "survives a JSON round trip" — e.g. JSON.stringify(-0) === "0" per
+        // spec, so -0 in ~ -0 out is not guaranteed and isn't a bug. Compare
+        // against what JSON itself would produce, not the raw input.
+        expect(decrypted).toEqual(JSON.parse(JSON.stringify(plaintext)));
       }),
       { numRuns: 50 },
     );

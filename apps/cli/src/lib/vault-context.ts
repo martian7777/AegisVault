@@ -1,6 +1,6 @@
 import { AuthenticationFailedError } from '@aegisvault/crypto-core';
-import { FileVaultRepository } from '@aegisvault/vault-core/node';
 import { VaultService, unlockVault } from '@aegisvault/vault-core';
+import { FileVaultRepository } from '@aegisvault/vault-core/node';
 import { base64ToBytes } from './base64.js';
 import { prompt, promptHidden } from './prompt.js';
 import { resolveVaultPath } from './vault-path.js';

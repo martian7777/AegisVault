@@ -8,7 +8,9 @@ import { base64ToBytes, bytesToBase64 } from '../util/base64.js';
  * (there is no structured-clone binary storage outside IndexedDB).
  */
 
-export type SerializedMetaValue = { kind: 'bytes'; base64: string } | { kind: 'json'; value: unknown };
+export type SerializedMetaValue =
+  | { kind: 'bytes'; base64: string }
+  | { kind: 'json'; value: unknown };
 
 export interface SerializedMetaEntry {
   key: VaultMetaKey;

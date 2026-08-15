@@ -1,4 +1,8 @@
-import { type EnvVarPayload, filterByProjectEnvironment, findEnvVarMatch } from '../lib/env-logic.js';
+import {
+  type EnvVarPayload,
+  filterByProjectEnvironment,
+  findEnvVarMatch,
+} from '../lib/env-logic.js';
 import { listItemsByType } from '../lib/item-helpers.js';
 import { promptHidden } from '../lib/prompt.js';
 import { unlockCliVault } from '../lib/vault-context.js';

@@ -13,5 +13,7 @@ export function filterExpiringSoon(
   now: number,
 ): Array<{ id: string; payload: ApiTokenPayload }> {
   const cutoff = now + withinDays * 24 * 60 * 60 * 1000;
-  return items.filter((item) => item.payload.expiresAt && Date.parse(item.payload.expiresAt) <= cutoff);
+  return items.filter(
+    (item) => item.payload.expiresAt && Date.parse(item.payload.expiresAt) <= cutoff,
+  );
 }

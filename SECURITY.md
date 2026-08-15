@@ -6,10 +6,10 @@ if this document and the code disagree, that is a bug in one of them.
 
 ## Scope
 
-This covers the MVP only: a single-device, local-first, zero-knowledge password
-vault running as a web app with no backend. It does not cover the deferred
-pillars (DevOps CLI, multi-device sync, Shamir recovery, AI defense) — those get
-their own security review when they're actually designed.
+This covers the local-first, zero-knowledge password vault core (web app, no
+backend), the DevOps CLI, and P2P device sync — all built on the same key
+hierarchy below. Shamir recovery and AI defense are still deferred and get
+their own security review when they're designed.
 
 ## Key Hierarchy
 
@@ -91,8 +91,6 @@ Per vault item:
   dependencies, pinned lockfile, `pnpm audit` in CI, keys imported as
   non-extractable `CryptoKey`s wherever possible so raw key bytes are never
   JS-readable even if script execution is compromised.
-- **Single-device trust model.** There is no multi-device sync, no server, and
-  no notion of "revoke a device" in the MVP.
 - **No memory-zeroing guarantee.** JavaScript provides no hard guarantee that
   a zeroed buffer's previous contents aren't still recoverable from process
   memory (GC timing is undefined, engines may copy/move buffers). The
@@ -102,3 +100,56 @@ Per vault item:
   unlocked (i.e., no protection against someone with a moment of access to an
   unlocked, unattended session — that's what the idle-lock timer bounds, not
   eliminates).
+
+## DevOps CLI
+
+- The CLI (`apps/cli`) maintains its **own local vault file** (default
+  `~/.aegisvault/vault.json`, permission mode `600`), separate from the web
+  app's IndexedDB vault, using the exact same crypto core. It is not
+  automatically unified with the web vault — device sync (below) is what
+  would let you carry items between them, by explicit user action, not
+  silent background merging.
+- **No persistent agent/session.** Every command re-derives keys from
+  password + Secret Key and exits; there is no `aegis-agent` daemon holding
+  `kEnc` in memory across invocations (unlike a real `ssh-agent`). This is
+  simpler and has a smaller attack surface than a long-lived key-holding
+  process, at the cost of re-entering credentials per command. Deferred, not
+  built: wrapping the Secret Key with a device-bound key for a "remember
+  this device" CLI session.
+- **SSH key management is generation + encrypted storage only** — not an
+  `SSH_AUTH_SOCK`-compatible agent bridge. `aegis ssh show --export-private`
+  writes the private key to a plaintext file (mode `600`) at the user's
+  explicit request; from that point it's protected by filesystem
+  permissions, not by AegisVault.
+- **`aegis token check` has no scheduling or webhook delivery.** It's a
+  one-shot check with a meaningful exit code, meant to be wired into the
+  user's own cron/CI — AegisVault does not page anyone on its own.
+
+## P2P Device Sync
+
+- **No signaling server.** Pairing exchanges a WebRTC offer/answer as a
+  copy-paste text blob between the two devices — there is no third party
+  that brokers the connection or ever sees the offer/answer text, unlike
+  most WebRTC apps which use a signaling server for this exchange.
+- **STUN only, no TURN fallback.** A public STUN server
+  (`stun.l.google.com:19302`) helps each device discover its own reachable
+  address for NAT traversal; it never relays vault data. On a sufficiently
+  restrictive NAT (symmetric NAT on both sides, corporate firewalls), direct
+  P2P connection can simply fail — there is no relay fallback to fall back
+  on. This is a deliberate scope cut, not a silent failure mode: pairing
+  will show a clear "could not connect" state rather than hang.
+- **The offer/answer exchange is the trust boundary, not WebRTC's DTLS.**
+  DTLS encrypts the data-channel transport, but WebRTC itself doesn't
+  authenticate *who* you're pairing with — that's established entirely by
+  the fact that the offer/answer text passed through a channel the user
+  trusts (in person, a private message). Pasting an offer from an untrusted
+  source and completing the pairing would connect you to *them*.
+- **The payload is still just ciphertext.** A synced `VaultBackup` is the
+  exact same shape used for file export — item ciphertext, wrapped keys,
+  and non-secret KDF metadata. Even if a connection were somehow relayed or
+  observed, nothing plaintext crosses the wire; sync adds a transport, not a
+  new trust requirement on top of the existing zero-knowledge model.
+- **Import still fully replaces the receiving vault**, exactly like file
+  import — the UI requires an explicit confirmation because there is no
+  merge logic (see the deferred roadmap: full delta/merge sync is a later
+  increment, not part of this pairing flow).

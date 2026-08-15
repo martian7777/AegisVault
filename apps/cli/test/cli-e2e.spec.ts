@@ -12,7 +12,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
  * invocation by design (no persistent agent — see SECURITY.md).
  */
 
-const cliEntry = join(import.meta.dirname, '..', 'dist', 'cli.js');
+const cliEntry = join(import.meta.dirname, '..', 'dist', 'cli.cjs');
 let tempDir: string;
 let vaultPath: string;
 let secretKey = '';
@@ -28,7 +28,7 @@ function runCli(args: string[], stdin: string): string {
 }
 
 beforeAll(() => {
-  execSync('npx tsc -p tsconfig.json', { cwd: join(import.meta.dirname, '..') });
+  execSync('npm run build', { cwd: join(import.meta.dirname, '..') });
   tempDir = mkdtempSync(join(tmpdir(), 'aegisvault-cli-e2e-'));
   vaultPath = join(tempDir, 'vault.json');
 }, 60000);
@@ -48,8 +48,14 @@ describe('aegis CLI end-to-end', () => {
   });
 
   it('sets and lists an environment variable', () => {
-    runCli(['env', 'set', 'acme', 'production', 'DATABASE_URL', 'postgres://test'], `${PASSWORD}\n${secretKey}\n`);
-    const output = runCli(['env', 'list', 'acme', 'production', '--show-values'], `${PASSWORD}\n${secretKey}\n`);
+    runCli(
+      ['env', 'set', 'acme', 'production', 'DATABASE_URL', 'postgres://test'],
+      `${PASSWORD}\n${secretKey}\n`,
+    );
+    const output = runCli(
+      ['env', 'list', 'acme', 'production', '--show-values'],
+      `${PASSWORD}\n${secretKey}\n`,
+    );
     expect(output).toContain('DATABASE_URL=postgres://test');
   });
 
@@ -68,7 +74,10 @@ describe('aegis CLI end-to-end', () => {
 
   it('flags an API token expiring soon via `token check`', () => {
     const soon = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-    runCli(['token', 'add', 'aws', 'prod-key', 'AKIA-fake-token', '--expires', soon], `${PASSWORD}\n${secretKey}\n`);
+    runCli(
+      ['token', 'add', 'aws', 'prod-key', 'AKIA-fake-token', '--expires', soon],
+      `${PASSWORD}\n${secretKey}\n`,
+    );
 
     let stdout = '';
     let exitCode = 0;

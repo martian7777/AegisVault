@@ -18,6 +18,14 @@ module.exports = {
       to: { path: '^apps' },
     },
     {
+      name: 'sync-engine-is-generic',
+      comment:
+        'sync-engine is a decoupled WebRTC transport for arbitrary JSON payloads — it must not know about vault-core or any app, so it stays reusable and independently testable.',
+      severity: 'error',
+      from: { path: '^packages/sync-engine' },
+      to: { path: '^(packages/vault-core|apps)' },
+    },
+    {
       name: 'web-never-imports-node-only-vault-core',
       comment:
         'apps/web is a browser bundle; it must never pull in vault-core/node (fs/path-based repository) — that would bloat the bundle or crash at runtime.',

@@ -1,5 +1,5 @@
-import { FileVaultRepository } from '@aegisvault/vault-core/node';
 import { onboardVault } from '@aegisvault/vault-core';
+import { FileVaultRepository } from '@aegisvault/vault-core/node';
 import { bytesToBase64 } from '../lib/base64.js';
 import { promptHidden } from '../lib/prompt.js';
 import { resolveVaultPath } from '../lib/vault-path.js';

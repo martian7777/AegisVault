@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { type EnvVarPayload, filterByProjectEnvironment, findEnvVarMatch } from '../src/lib/env-logic.js';
+import {
+  type EnvVarPayload,
+  filterByProjectEnvironment,
+  findEnvVarMatch,
+} from '../src/lib/env-logic.js';
 
-function item(project: string, environment: string, key: string, value = 'v'): { id: string; payload: EnvVarPayload } {
+function item(
+  project: string,
+  environment: string,
+  key: string,
+  value = 'v',
+): { id: string; payload: EnvVarPayload } {
   return { id: `${project}/${environment}/${key}`, payload: { project, environment, key, value } };
 }
 
@@ -20,7 +29,10 @@ describe('filterByProjectEnvironment', () => {
 
 describe('findEnvVarMatch', () => {
   it('finds an exact project/environment/key match', () => {
-    const items = [item('acme', 'production', 'DATABASE_URL'), item('acme', 'production', 'API_KEY')];
+    const items = [
+      item('acme', 'production', 'DATABASE_URL'),
+      item('acme', 'production', 'API_KEY'),
+    ];
     const match = findEnvVarMatch(items, 'acme', 'production', 'API_KEY');
     expect(match?.payload.key).toBe('API_KEY');
   });

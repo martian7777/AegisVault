@@ -8,8 +8,14 @@ export interface EnvVarPayload {
 type EnvVarItem = { id: string; payload: EnvVarPayload };
 
 /** Pure filters, extracted for direct unit testing without spawning a process. */
-export function filterByProjectEnvironment(items: EnvVarItem[], project: string, environment: string): EnvVarItem[] {
-  return items.filter((item) => item.payload.project === project && item.payload.environment === environment);
+export function filterByProjectEnvironment(
+  items: EnvVarItem[],
+  project: string,
+  environment: string,
+): EnvVarItem[] {
+  return items.filter(
+    (item) => item.payload.project === project && item.payload.environment === environment,
+  );
 }
 
 export function findEnvVarMatch(
@@ -20,6 +26,8 @@ export function findEnvVarMatch(
 ): EnvVarItem | undefined {
   return items.find(
     (item) =>
-      item.payload.project === project && item.payload.environment === environment && item.payload.key === key,
+      item.payload.project === project &&
+      item.payload.environment === environment &&
+      item.payload.key === key,
   );
 }

@@ -43,6 +43,9 @@ importers:
       '@types/node':
         specifier: ^22.10.5
         version: 22.20.1
+      esbuild:
+        specifier: '>=0.25.0'
+        version: 0.25.12
       typescript:
         specifier: ^5.7.3
         version: 5.9.3
@@ -55,6 +58,9 @@ importers:
       '@aegisvault/crypto-core':
         specifier: workspace:*
         version: link:../../packages/crypto-core
+      '@aegisvault/sync-engine':
+        specifier: workspace:*
+        version: link:../../packages/sync-engine
       '@aegisvault/vault-core':
         specifier: workspace:*
         version: link:../../packages/vault-core
@@ -96,6 +102,27 @@ importers:
       fast-check:
         specifier: ^3.23.2
         version: 3.23.2
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.6
+        version: 3.2.7(@types/node@22.20.1)
+
+  packages/shamir:
+    devDependencies:
+      fast-check:
+        specifier: ^3.23.2
+        version: 3.23.2
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.3
+      vitest:
+        specifier: ^3.2.6
+        version: 3.2.7(@types/node@22.20.1)
+
+  packages/sync-engine:
+    devDependencies:
       typescript:
         specifier: ^5.7.3
         version: 5.9.3
