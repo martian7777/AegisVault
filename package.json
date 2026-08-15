@@ -13,6 +13,12 @@
     "boundaries": "depcruise --config .dependency-cruiser.cjs packages apps",
     "dev": "pnpm --filter @aegisvault/web run dev"
   },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "esbuild"
+    ]
+  },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@vitest/coverage-v8": "^2.1.9",
