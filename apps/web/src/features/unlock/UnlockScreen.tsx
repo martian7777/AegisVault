@@ -11,7 +11,12 @@ function sleep(ms: number): Promise<void> {
 
 type UnlockMode = 'password' | 'shares';
 
-export function UnlockScreen({ onUnlocked }: { onUnlocked: () => void }) {
+interface UnlockScreenProps {
+  onUnlocked: () => void;
+  onBackToMarketing?: () => void;
+}
+
+export function UnlockScreen({ onUnlocked, onBackToMarketing }: UnlockScreenProps) {
   const [mode, setMode] = useState<UnlockMode>('password');
   const [password, setPassword] = useState('');
   const [secretKeyInput, setSecretKeyInput] = useState('');
@@ -27,9 +32,7 @@ export function UnlockScreen({ onUnlocked }: { onUnlocked: () => void }) {
       await attempt();
       onUnlocked();
     } catch {
-      // Generic message regardless of failure cause: never reveal whether
-      // the password, Secret Key, or shares were the ones that were wrong.
-      setError('Incorrect credentials.');
+      setError('Incorrect master credentials or invalid Secret Key.');
       const nextAttempt = failedAttempts + 1;
       setFailedAttempts(nextAttempt);
       const backoff = Math.min(BASE_BACKOFF_MS * 2 ** nextAttempt, MAX_BACKOFF_MS);
@@ -44,7 +47,7 @@ export function UnlockScreen({ onUnlocked }: { onUnlocked: () => void }) {
     try {
       secretKey = base64ToBytes(secretKeyInput.trim());
     } catch {
-      setError('Secret Key is not valid — check for typos.');
+      setError('Secret Key format is invalid — check for typos.');
       return;
     }
     await withBackoffOnFailure(() => cryptoWorker.unlock(password, secretKey));
@@ -56,7 +59,7 @@ export function UnlockScreen({ onUnlocked }: { onUnlocked: () => void }) {
       .map((line) => line.trim())
       .filter((line) => line.length > 0);
     if (shareTexts.length === 0) {
-      setError('Paste at least one recovery share.');
+      setError('Please paste at least one Shamir recovery share.');
       return;
     }
     await withBackoffOnFailure(() => cryptoWorker.recoverWithShares(shareTexts));
@@ -64,68 +67,123 @@ export function UnlockScreen({ onUnlocked }: { onUnlocked: () => void }) {
 
   return (
     <div className="app-shell">
-      <div className="panel">
-        <h1>Unlock AegisVault</h1>
+      <div className="app-panel" style={{ width: 'min(540px, 100%)' }}>
+        <div className="app-panel-header">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <div className="brand-icon" style={{ width: '34px', height: '34px', fontSize: '1rem' }}>
+              🔒
+            </div>
+            <h2 className="app-panel-title">Unlock AegisVault</h2>
+          </div>
+          {onBackToMarketing && (
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={onBackToMarketing}
+              style={{ padding: '0.35rem 0.75rem', fontSize: '0.8rem' }}
+            >
+              ← Back to Site
+            </button>
+          )}
+        </div>
 
         {mode === 'password' && (
           <>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem' }}>
+              Enter your Master Password and 128-bit Secret Key to decrypt your vault.
+            </p>
+
             <div className="field">
-              <label htmlFor="unlock-password">Master password</label>
+              <label htmlFor="unlock-password">Master Password</label>
               <input
                 id="unlock-password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter master password"
                 autoComplete="current-password"
               />
             </div>
+
             <div className="field">
-              <label htmlFor="unlock-secret-key">Secret Key</label>
+              <label htmlFor="unlock-secret-key">Secret Key (128-bit Base64)</label>
               <input
                 id="unlock-secret-key"
                 type="text"
                 value={secretKeyInput}
                 onChange={(e) => setSecretKeyInput(e.target.value)}
+                placeholder="e.g. aegis-sec-..."
                 spellCheck={false}
               />
             </div>
-            {error && <p className="error-text">{error}</p>}
-            <button type="button" onClick={handleUnlock} disabled={busy}>
-              {busy ? 'Unlocking…' : 'Unlock'}
+
+            {error && <div className="error-banner">{error}</div>}
+
+            <button
+              type="button"
+              className="btn-primary btn-glow-pulse"
+              onClick={handleUnlock}
+              disabled={busy || !password || !secretKeyInput}
+              style={{ width: '100%', padding: '0.75rem', marginTop: '0.5rem' }}
+            >
+              {busy ? 'Deriving & Decrypting…' : 'Unlock Sovereign Vault'}
             </button>
-            <p className="hint-text field-spaced">
-              <button type="button" className="secondary" onClick={() => setMode('shares')}>
-                Recover using emergency shares instead
+
+            <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setMode('shares')}
+                style={{ fontSize: '0.82rem', padding: '0.4rem 0.9rem' }}
+              >
+                👥 Recover using Shamir Emergency Shares instead
               </button>
-            </p>
+            </div>
           </>
         )}
 
         {mode === 'shares' && (
           <>
-            <p className="hint-text">
-              Paste your recovery shares, one per line — no master password needed if you have
-              enough of them.
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem' }}>
+              Paste your Shamir recovery shares (one per line). Master password is not required if the
+              threshold $k$ is met.
             </p>
+
             <div className="field">
-              <label htmlFor="unlock-shares">Recovery shares</label>
+              <label htmlFor="unlock-shares">Recovery Shares</label>
               <textarea
                 id="unlock-shares"
                 value={sharesInput}
                 onChange={(e) => setSharesInput(e.target.value)}
                 rows={5}
+                placeholder="Paste share lines..."
                 spellCheck={false}
+                style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}
               />
             </div>
-            {error && <p className="error-text">{error}</p>}
-            <button type="button" onClick={handleRecover} disabled={busy}>
-              {busy ? 'Recovering…' : 'Recover vault'}
+
+            {error && <div className="error-banner">{error}</div>}
+
+            <button
+              type="button"
+              className="btn-primary btn-glow-pulse"
+              onClick={handleRecover}
+              disabled={busy || !sharesInput.trim()}
+              style={{ width: '100%', padding: '0.75rem', marginTop: '0.5rem' }}
+            >
+              {busy ? 'Reconstructing Key…' : 'Reconstruct & Recover Vault'}
             </button>
-            <p className="hint-text field-spaced">
-              <button type="button" className="secondary" onClick={() => setMode('password')}>
-                Use master password instead
+
+            <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setMode('password')}
+                style={{ fontSize: '0.82rem', padding: '0.4rem 0.9rem' }}
+              >
+                ← Return to Master Password Unlock
               </button>
-            </p>
+            </div>
           </>
         )}
       </div>

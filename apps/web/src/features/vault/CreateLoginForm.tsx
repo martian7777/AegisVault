@@ -18,31 +18,53 @@ export function CreateLoginForm({ onCreate }: { onCreate: (payload: LoginItemPay
   }
 
   return (
-    <form className="panel" onSubmit={handleSubmit}>
-      <h1>New login</h1>
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div className="field">
-        <label htmlFor="item-title">Title</label>
-        <input id="item-title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <label htmlFor="item-title">Item Title / Service Name *</label>
+        <input
+          id="item-title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="e.g. GitHub Production, AWS KMS, Personal Email"
+          required
+        />
       </div>
+
       <div className="field">
-        <label htmlFor="item-username">Username</label>
-        <input id="item-username" value={username} onChange={(e) => setUsername(e.target.value)} />
+        <label htmlFor="item-username">Username / Email / Identifier</label>
+        <input
+          id="item-username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="e.g. admin@company.internal or secops_user"
+        />
       </div>
+
       <div className="field">
-        <label htmlFor="item-password">Password</label>
+        <label htmlFor="item-password">Password / Secret Key</label>
         <input
           id="item-password"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          placeholder="Enter secret payload to envelope-encrypt"
           autoComplete="new-password"
         />
       </div>
+
       <div className="field">
-        <label htmlFor="item-url">URL</label>
-        <input id="item-url" value={url} onChange={(e) => setUrl(e.target.value)} />
+        <label htmlFor="item-url">Service URL / Domain (Optional)</label>
+        <input
+          id="item-url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="https://..."
+        />
       </div>
-      <button type="submit">Save item</button>
+
+      <button type="submit" className="btn-primary btn-glow-pulse" style={{ marginTop: '0.5rem' }}>
+        🔒 Encrypt & Save to Vault
+      </button>
     </form>
   );
 }
