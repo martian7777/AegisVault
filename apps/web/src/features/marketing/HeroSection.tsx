@@ -20,18 +20,15 @@ export function HeroSection({ onLaunchVault, onExploreCrypto }: HeroSectionProps
         </h1>
 
         <p className="hero-subtitle">
-          Eliminate high-value cloud breach targets. AegisVault executes 100% client-side dual-factor 
-          Argon2id derivation and per-item AES-256-GCM envelope encryption off the main UI thread. 
-          Your plaintext secrets never touch disk, telemetry, or remote servers.
+          Eliminate high-value cloud breach targets. AegisVault executes 100% client-side
+          dual-factor Argon2id derivation and per-item AES-256-GCM envelope encryption off the main
+          UI thread. Your plaintext secrets never touch disk, telemetry, or remote servers.
         </p>
 
         <div className="hero-actions">
-          <button
-            type="button"
-            className="btn-primary btn-glow-pulse"
-            onClick={onLaunchVault}
-          >
+          <button type="button" className="btn-primary btn-glow-pulse" onClick={onLaunchVault}>
             <svg
+              aria-hidden="true"
               width="18"
               height="18"
               viewBox="0 0 24 24"
@@ -46,13 +43,10 @@ export function HeroSection({ onLaunchVault, onExploreCrypto }: HeroSectionProps
             </svg>
             Launch Web Vault Free
           </button>
-          
-          <button
-            type="button"
-            className="btn-secondary"
-            onClick={onExploreCrypto}
-          >
+
+          <button type="button" className="btn-secondary" onClick={onExploreCrypto}>
             <svg
+              aria-hidden="true"
               width="18"
               height="18"
               viewBox="0 0 24 24"

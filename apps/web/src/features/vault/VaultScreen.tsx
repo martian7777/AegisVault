@@ -95,7 +95,7 @@ export function VaultScreen({ onLocked, onBackToMarketing }: VaultScreenProps) {
     const query = searchQuery.toLowerCase();
     return (
       item.title.toLowerCase().includes(query) ||
-      (item.username && item.username.toLowerCase().includes(query))
+      item.username?.toLowerCase().includes(query)
     );
   });
 
@@ -240,18 +240,31 @@ export function VaultScreen({ onLocked, onBackToMarketing }: VaultScreenProps) {
                 {filteredItems.map((item) => {
                   const isSelected = item.id === selectedId;
                   return (
-                    <div
+                    <button
+                      type="button"
                       key={item.id}
                       className={`vault-item-card ${isSelected ? 'selected' : ''}`}
                       onClick={() => handleSelect(item.id)}
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: 'pointer', textAlign: 'left', width: '100%' }}
                     >
                       <div>
-                        <div style={{ fontWeight: 600, color: 'var(--text-title)', fontSize: '0.95rem' }}>
+                        <div
+                          style={{
+                            fontWeight: 600,
+                            color: 'var(--text-title)',
+                            fontSize: '0.95rem',
+                          }}
+                        >
                           {item.title}
                         </div>
                         {item.username && (
-                          <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
+                          <div
+                            style={{
+                              fontSize: '0.8rem',
+                              color: 'var(--text-muted)',
+                              marginTop: '0.15rem',
+                            }}
+                          >
                             {item.username}
                           </div>
                         )}
@@ -271,7 +284,7 @@ export function VaultScreen({ onLocked, onBackToMarketing }: VaultScreenProps) {
                           Delete
                         </button>
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -291,7 +304,14 @@ export function VaultScreen({ onLocked, onBackToMarketing }: VaultScreenProps) {
               <span style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-title)' }}>
                 Decrypted Inspector
               </span>
-              <span className="badge-tag" style={{ color: 'var(--emerald-primary)', borderColor: 'var(--emerald-border)', background: 'var(--emerald-light)' }}>
+              <span
+                className="badge-tag"
+                style={{
+                  color: 'var(--emerald-primary)',
+                  borderColor: 'var(--emerald-border)',
+                  background: 'var(--emerald-light)',
+                }}
+              >
                 Authenticated GCM
               </span>
             </div>

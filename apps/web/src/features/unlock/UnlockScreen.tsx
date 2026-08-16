@@ -145,8 +145,8 @@ export function UnlockScreen({ onUnlocked, onBackToMarketing }: UnlockScreenProp
         {mode === 'shares' && (
           <>
             <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '1.25rem' }}>
-              Paste your Shamir recovery shares (one per line). Master password is not required if the
-              threshold $k$ is met.
+              Paste your Shamir recovery shares (one per line). Master password is not required if
+              the threshold $k$ is met.
             </p>
 
             <div className="field">

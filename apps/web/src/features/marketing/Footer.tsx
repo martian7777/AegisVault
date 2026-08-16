@@ -12,17 +12,34 @@ export function Footer({ onSelectTab, onLaunchVault }: FooterProps) {
         <div className="footer-grid">
           {/* Col 1: Brand */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', marginBottom: '1rem' }}>
-              <div className="brand-icon" style={{ width: '32px', height: '32px', fontSize: '1rem' }}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                marginBottom: '1rem',
+              }}
+            >
+              <div
+                className="brand-icon"
+                style={{ width: '32px', height: '32px', fontSize: '1rem' }}
+              >
                 🛡️
               </div>
               <span className="brand-title" style={{ fontSize: '1.2rem' }}>
                 AegisVault
               </span>
             </div>
-            <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: '1.6', maxWidth: '360px' }}>
-              Next-generation zero-knowledge sovereign secrets & password manager engineered for absolute
-              cryptographic sovereignty and zero cloud telemetry.
+            <p
+              style={{
+                fontSize: '0.88rem',
+                color: 'var(--text-muted)',
+                lineHeight: '1.6',
+                maxWidth: '360px',
+              }}
+            >
+              Next-generation zero-knowledge sovereign secrets & password manager engineered for
+              absolute cryptographic sovereignty and zero cloud telemetry.
             </p>
           </div>
 
@@ -88,7 +105,9 @@ export function Footer({ onSelectTab, onLaunchVault }: FooterProps) {
         </div>
 
         <div className="footer-bottom">
-          <div>© {new Date().getFullYear()} AegisVault. Licensed under the MIT Open Source License.</div>
+          <div>
+            © {new Date().getFullYear()} AegisVault. Licensed under the MIT Open Source License.
+          </div>
           <div style={{ display: 'flex', gap: '1.5rem' }}>
             <span style={{ color: 'var(--cyan-glow)' }}>100% Client-Side Sovereign</span>
             <span>Zero Cloud Telemetry</span>

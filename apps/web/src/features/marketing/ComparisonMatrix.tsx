@@ -6,7 +6,8 @@ export function ComparisonMatrix() {
           <span className="section-tag">Security Architecture Benchmark</span>
           <h2 className="section-title">AegisVault vs Legacy Password Managers</h2>
           <p className="section-description">
-            Compare cryptographic specifications, execution isolation, and trust models side by side.
+            Compare cryptographic specifications, execution isolation, and trust models side by
+            side.
           </p>
         </div>
 
@@ -15,7 +16,10 @@ export function ComparisonMatrix() {
             <thead>
               <tr>
                 <th style={{ width: '28%' }}>Feature Dimension</th>
-                <th className="highlight-col" style={{ width: '26%', color: 'var(--cyan-primary)' }}>
+                <th
+                  className="highlight-col"
+                  style={{ width: '26%', color: 'var(--cyan-primary)' }}
+                >
                   🛡️ AegisVault (Sovereign)
                 </th>
                 <th style={{ width: '15%' }}>1Password</th>
@@ -68,11 +72,16 @@ export function ComparisonMatrix() {
                   </div>
                 </td>
                 <td className="highlight-col">
-                  <span className="check-icon">✓</span> <strong>128-bit Sovereign Secret Key</strong>
+                  <span className="check-icon">✓</span>{' '}
+                  <strong>128-bit Sovereign Secret Key</strong>
                 </td>
                 <td>128-bit Secret Key</td>
-                <td><span className="cross-icon">✕</span> Single Master Password</td>
-                <td><span className="cross-icon">✕</span> Single Master Password</td>
+                <td>
+                  <span className="cross-icon">✕</span> Single Master Password
+                </td>
+                <td>
+                  <span className="cross-icon">✕</span> Single Master Password
+                </td>
               </tr>
 
               <tr>
@@ -83,7 +92,8 @@ export function ComparisonMatrix() {
                   </div>
                 </td>
                 <td className="highlight-col">
-                  <span className="check-icon">✓</span> <strong>Dedicated Web Worker (Comlink)</strong>
+                  <span className="check-icon">✓</span>{' '}
+                  <strong>Dedicated Web Worker (Comlink)</strong>
                 </td>
                 <td>Native Apps / Main Thread</td>
                 <td>Main JS Thread</td>
@@ -98,7 +108,8 @@ export function ComparisonMatrix() {
                   </div>
                 </td>
                 <td className="highlight-col">
-                  <span className="check-icon">✓</span> <strong>Envelope: Unique 256-bit Key / item</strong>
+                  <span className="check-icon">✓</span>{' '}
+                  <strong>Envelope: Unique 256-bit Key / item</strong>
                 </td>
                 <td>Vault-level key hierarchy</td>
                 <td>Single symmetric vault key</td>
@@ -113,7 +124,8 @@ export function ComparisonMatrix() {
                   </div>
                 </td>
                 <td className="highlight-col">
-                  <span className="check-icon">✓</span> <strong>Shamir Secret Sharing (k-of-n)</strong>
+                  <span className="check-icon">✓</span>{' '}
+                  <strong>Shamir Secret Sharing (k-of-n)</strong>
                 </td>
                 <td>Emergency Kit PDF</td>
                 <td>Trusted emergency contacts</td>

@@ -10,7 +10,7 @@ interface MockItem {
   lastUpdated: string;
 }
 
-const MOCK_ITEMS: MockItem[] = [
+const MOCK_ITEMS: [MockItem, ...MockItem[]] = [
   {
     id: '1',
     title: 'GitHub Enterprise / Production',
@@ -59,7 +59,7 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
     return () => clearInterval(timer);
   }, []);
 
-  const selectedItem = MOCK_ITEMS.find((item) => item.id === selectedId) ?? MOCK_ITEMS[0]!;
+  const selectedItem = MOCK_ITEMS.find((item) => item.id === selectedId) ?? MOCK_ITEMS[0];
 
   function handleCopy(id: string, text: string) {
     void navigator.clipboard.writeText(text);
@@ -74,8 +74,8 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
           <span className="section-tag">Interactive Vault Interface</span>
           <h2 className="section-title">Clean Sovereign Command Center</h2>
           <p className="section-description">
-            Experience the studio interface designed for instant credential access,
-            built-in TOTP authenticators, and envelope-encrypted items.
+            Experience the studio interface designed for instant credential access, built-in TOTP
+            authenticators, and envelope-encrypted items.
           </p>
         </div>
 
@@ -103,9 +103,30 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ff5f56' }} />
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ffbd2e' }} />
-              <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#27c93f' }} />
+              <div
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  background: '#ff5f56',
+                }}
+              />
+              <div
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  background: '#ffbd2e',
+                }}
+              />
+              <div
+                style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  background: '#27c93f',
+                }}
+              />
               <span
                 style={{
                   marginLeft: '0.75rem',
@@ -179,22 +200,35 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
                 {MOCK_ITEMS.map((item) => {
                   const isSelected = item.id === selectedId;
                   return (
-                    <div
+                    <button
+                      type="button"
                       key={item.id}
                       onClick={() => setSelectedId(item.id)}
                       className={`vault-item-card ${isSelected ? 'selected' : ''}`}
-                      style={{ cursor: 'pointer', margin: 0 }}
+                      style={{ cursor: 'pointer', margin: 0, textAlign: 'left', width: '100%' }}
                     >
                       <div>
-                        <div style={{ fontWeight: 600, color: 'var(--text-title)', fontSize: '0.95rem' }}>
+                        <div
+                          style={{
+                            fontWeight: 600,
+                            color: 'var(--text-title)',
+                            fontSize: '0.95rem',
+                          }}
+                        >
                           {item.title}
                         </div>
-                        <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.15rem' }}>
+                        <div
+                          style={{
+                            fontSize: '0.8rem',
+                            color: 'var(--text-muted)',
+                            marginTop: '0.15rem',
+                          }}
+                        >
                           {item.username}
                         </div>
                       </div>
                       <span className="badge-tag">{item.category}</span>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -223,7 +257,13 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
                 >
                   <div>
                     <span className="badge-tag">{selectedItem.category}</span>
-                    <h3 style={{ fontSize: '1.25rem', marginTop: '0.35rem', color: 'var(--text-title)' }}>
+                    <h3
+                      style={{
+                        fontSize: '1.25rem',
+                        marginTop: '0.35rem',
+                        color: 'var(--text-title)',
+                      }}
+                    >
                       {selectedItem.title}
                     </h3>
                   </div>
@@ -234,7 +274,14 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
 
                 {/* Username Field */}
                 <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.25rem', fontWeight: 600 }}>
+                  <div
+                    style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--text-muted)',
+                      marginBottom: '0.25rem',
+                      fontWeight: 600,
+                    }}
+                  >
                     Identity / Identifier
                   </div>
                   <div
@@ -255,7 +302,14 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
 
                 {/* Password / Secret Field */}
                 <div style={{ marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.25rem', fontWeight: 600 }}>
+                  <div
+                    style={{
+                      fontSize: '0.75rem',
+                      color: 'var(--text-muted)',
+                      marginBottom: '0.25rem',
+                      fontWeight: 600,
+                    }}
+                  >
                     Decrypted Secret (Envelope AES-GCM)
                   </div>
                   <div
@@ -290,7 +344,14 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
                 {/* TOTP Field if available */}
                 {selectedItem.totp && (
                   <div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.25rem', fontWeight: 600 }}>
+                    <div
+                      style={{
+                        fontSize: '0.75rem',
+                        color: 'var(--text-muted)',
+                        marginBottom: '0.25rem',
+                        fontWeight: 600,
+                      }}
+                    >
                       2FA TOTP Code (Updates in {totpSeconds}s)
                     </div>
                     <div
@@ -342,7 +403,9 @@ export function VaultLivePreview({ onLaunch }: { onLaunch: () => void }) {
                 }}
               >
                 <span>Envelope Key: AES-256-GCM (Unique)</span>
-                <span style={{ color: 'var(--emerald-primary)', fontWeight: 600 }}>AAD Verified ✓</span>
+                <span style={{ color: 'var(--emerald-primary)', fontWeight: 600 }}>
+                  AAD Verified ✓
+                </span>
               </div>
             </div>
           </div>

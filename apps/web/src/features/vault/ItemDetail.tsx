@@ -20,7 +20,9 @@ export function ItemDetail({ item }: { item: LoginItemPayload }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
       <div>
         <span className="badge-tag">Login Credential</span>
-        <h2 style={{ fontSize: '1.4rem', color: 'var(--text-title)', marginTop: '0.35rem' }}>{item.title}</h2>
+        <h2 style={{ fontSize: '1.4rem', color: 'var(--text-title)', marginTop: '0.35rem' }}>
+          {item.title}
+        </h2>
       </div>
 
       {item.username && (
@@ -79,7 +81,12 @@ export function ItemDetail({ item }: { item: LoginItemPayload }) {
               target="_blank"
               rel="noreferrer noopener"
               className="btn-secondary"
-              style={{ display: 'inline-flex', alignItems: 'center', padding: '0.4rem 0.8rem', fontSize: '0.8rem' }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                padding: '0.4rem 0.8rem',
+                fontSize: '0.8rem',
+              }}
             >
               Open ↗
             </a>
@@ -101,7 +108,9 @@ export function ItemDetail({ item }: { item: LoginItemPayload }) {
         }}
       >
         <span>Cipher: AES-256-GCM Envelope</span>
-        <span style={{ color: 'var(--emerald-primary)', fontWeight: 600 }}>AAD Integrity: OK ✓</span>
+        <span style={{ color: 'var(--emerald-primary)', fontWeight: 600 }}>
+          AAD Integrity: OK ✓
+        </span>
       </div>
     </div>
   );

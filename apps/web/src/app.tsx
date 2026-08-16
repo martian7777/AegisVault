@@ -111,41 +111,23 @@ export function App() {
 
       <main>
         {activeTab === 'overview' && (
-          <OverviewView
-            onLaunchVault={handleLaunchVault}
-            onSelectTab={handleSelectTab}
-          />
+          <OverviewView onLaunchVault={handleLaunchVault} onSelectTab={handleSelectTab} />
         )}
         {activeTab === 'features' && (
-          <FeaturesView
-            onLaunchVault={handleLaunchVault}
-            onSelectTab={handleSelectTab}
-          />
+          <FeaturesView onLaunchVault={handleLaunchVault} onSelectTab={handleSelectTab} />
         )}
         {activeTab === 'security' && (
-          <SecurityView
-            onLaunchVault={handleLaunchVault}
-            onSelectTab={handleSelectTab}
-          />
+          <SecurityView onLaunchVault={handleLaunchVault} onSelectTab={handleSelectTab} />
         )}
         {activeTab === 'pricing' && (
-          <PricingView
-            onLaunchVault={handleLaunchVault}
-            onSelectTab={handleSelectTab}
-          />
+          <PricingView onLaunchVault={handleLaunchVault} onSelectTab={handleSelectTab} />
         )}
         {activeTab === 'faq' && (
-          <FaqView
-            onLaunchVault={handleLaunchVault}
-            onSelectTab={handleSelectTab}
-          />
+          <FaqView onLaunchVault={handleLaunchVault} onSelectTab={handleSelectTab} />
         )}
       </main>
 
-      <Footer
-        onSelectTab={handleSelectTab}
-        onLaunchVault={handleLaunchVault}
-      />
+      <Footer onSelectTab={handleSelectTab} onLaunchVault={handleLaunchVault} />
     </div>
   );
 }

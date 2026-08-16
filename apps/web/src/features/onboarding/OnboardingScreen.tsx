@@ -55,23 +55,45 @@ export function OnboardingScreen({ onOnboarded, onBackToMarketing }: OnboardingS
         <div className="app-panel" style={{ width: 'min(580px, 100%)' }}>
           <div className="app-panel-header">
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div className="brand-icon" style={{ width: '34px', height: '34px', fontSize: '1rem' }}>
+              <div
+                className="brand-icon"
+                style={{ width: '34px', height: '34px', fontSize: '1rem' }}
+              >
                 🔑
               </div>
               <h2 className="app-panel-title">Save Your Secret Key</h2>
             </div>
-            <span className="badge-tag" style={{ color: 'var(--emerald-glow)', borderColor: 'var(--emerald-border)' }}>
+            <span
+              className="badge-tag"
+              style={{ color: 'var(--emerald-glow)', borderColor: 'var(--emerald-border)' }}
+            >
               128-bit Entropy
             </span>
           </div>
 
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.25rem', lineHeight: '1.6' }}>
-            This 128-bit key was generated locally using CSPRNG and will never leave your device. 
-            It is required together with your master password to unlock your vault. <strong>AegisVault has no backdoor or reset mechanism.</strong>
+          <p
+            style={{
+              color: 'var(--text-muted)',
+              fontSize: '0.9rem',
+              marginBottom: '1.25rem',
+              lineHeight: '1.6',
+            }}
+          >
+            This 128-bit key was generated locally using CSPRNG and will never leave your device. It
+            is required together with your master password to unlock your vault.{' '}
+            <strong>AegisVault has no backdoor or reset mechanism.</strong>
           </p>
 
           <div className="secret-key-card">
-            <div style={{ fontSize: '0.75rem', color: 'var(--emerald-glow)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div
+              style={{
+                fontSize: '0.75rem',
+                color: 'var(--emerald-glow)',
+                marginBottom: '0.35rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}
+            >
               Your Sovereign Secret Key:
             </div>
             <div>{secretKey}</div>
@@ -85,6 +107,7 @@ export function OnboardingScreen({ onOnboarded, onBackToMarketing }: OnboardingS
               style={{ flex: 1 }}
             >
               <svg
+                aria-hidden="true"
                 width="16"
                 height="16"
                 viewBox="0 0 24 24"
@@ -110,7 +133,10 @@ export function OnboardingScreen({ onOnboarded, onBackToMarketing }: OnboardingS
               marginBottom: '1.5rem',
             }}
           >
-            <label className="custom-checkbox-label" style={{ color: 'var(--text-title)', fontWeight: 600 }}>
+            <label
+              className="custom-checkbox-label"
+              style={{ color: 'var(--text-title)', fontWeight: 600 }}
+            >
               <input
                 type="checkbox"
                 checked={confirmedSaved}
@@ -199,6 +225,7 @@ export function OnboardingScreen({ onOnboarded, onBackToMarketing }: OnboardingS
           {busy ? (
             <>
               <svg
+                aria-hidden="true"
                 width="16"
                 height="16"
                 viewBox="0 0 24 24"

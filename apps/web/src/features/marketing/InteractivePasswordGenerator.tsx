@@ -71,7 +71,7 @@ export function InteractivePasswordGenerator() {
 
   let strengthLabel = 'Weak';
   let strengthColor = 'var(--crimson-glow)';
-  let fillPercent = Math.min(100, Math.round((entropyBits / 128) * 100));
+  const fillPercent = Math.min(100, Math.round((entropyBits / 128) * 100));
   let crackTimeEstimate = 'Instantly';
 
   if (entropyBits >= 128) {
@@ -117,6 +117,7 @@ export function InteractivePasswordGenerator() {
                   title="Generate new secret"
                 >
                   <svg
+                    aria-hidden="true"
                     width="16"
                     height="16"
                     viewBox="0 0 24 24"
@@ -137,6 +138,7 @@ export function InteractivePasswordGenerator() {
                   id="copy-generated-pwd-btn"
                 >
                   <svg
+                    aria-hidden="true"
                     width="16"
                     height="16"
                     viewBox="0 0 24 24"
@@ -195,7 +197,13 @@ export function InteractivePasswordGenerator() {
               <span style={{ fontWeight: 600, fontSize: '0.95rem', color: 'var(--text-title)' }}>
                 Length: {length} Characters
               </span>
-              <span style={{ color: 'var(--cyan-primary)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>
+              <span
+                style={{
+                  color: 'var(--cyan-primary)',
+                  fontFamily: 'var(--font-mono)',
+                  fontWeight: 700,
+                }}
+              >
                 {length}
               </span>
             </div>
