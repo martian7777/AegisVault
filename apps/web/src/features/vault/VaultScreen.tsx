@@ -93,10 +93,7 @@ export function VaultScreen({ onLocked, onBackToMarketing }: VaultScreenProps) {
   const filteredItems = items.filter((item) => {
     if (!searchQuery.trim()) return true;
     const query = searchQuery.toLowerCase();
-    return (
-      item.title.toLowerCase().includes(query) ||
-      item.username?.toLowerCase().includes(query)
-    );
+    return item.title.toLowerCase().includes(query) || item.username?.toLowerCase().includes(query);
   });
 
   return (
